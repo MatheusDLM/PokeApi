@@ -3,16 +3,28 @@
   <div class="cabecalho">
     <h1>Qual seu pokemon ?</h1>
   </div>
+<!-- TODO? Utilizando SOMENTE o FormControl  -->
+<div> 
+  <label>Digite o nome do pokemon: </label>
+  <input type="text" [formControl]="exampleFormControl">
+  <input type="text" [formControl]="cepControl">
+  <input type="text" [formControl]="bairroControl">
+  <button class="search-button" type="submit" [disabled]="!exampleFormControl.valid" (click)="onSubmit()">Enviar</button>
+</div>
+<!--  -->
 
+
+<!-- TODO? Utilizando o FormControl DENTRO do FormGroup  -->
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <label>Digite o nome do pokemon: </label>
     <input class="input" type="text" name="name" formControlName="name">
+    <input class="input" type="text" name="name" formControlName="cep">
+    <input class="input" type="text" name="name" formControlName="bairro">
+    <input class="input" type="text" name="name" formControlName="estado">
     <button class="search-button" type="submit" [disabled]="!form.valid">Enviar</button>
   </form>
-  <!--   
-  <p *ngIf="pokemon">{{pokemon.name}}</p>
+<!--  -->
 
-  <img *ngIf="pokemon.sprites?.front_default" src="{{ pokemon.sprites.front_default }}" alt="Pokemon"> -->
   <div class="pokemon">
     <div *ngFor="let pokemon of searchHistory; let i = index" class="cards">
       <div class="pokemonImagem">
@@ -22,7 +34,7 @@
         <p class="nomePokemon" *ngIf="pokemon">{{pokemon.name}}</p>
         <p class="nomePokemon" *ngIf="pokemon">#{{pokemon.id}}</p>
         <ul>
-          <li *ngFor="let tipo of pokemon.types">{{ tipo.type.name }}</li>
+          <li *ngFor="let item of pokemon.types">{{ item.type.name }}</li> 
         </ul>
       </div>
       <button class="delete-button" (click)="removeFromHistory(i)">Excluir</button>
