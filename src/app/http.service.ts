@@ -10,8 +10,9 @@ export class HttpService {
 
   constructor(private _http: HttpClient) { }
 
+  getDados(name: string): Observable<Pokemon> | null {
+    if (name === '') return null;
 
-  getDados(name: string): Observable<Pokemon> {
     return this._http.get<Pokemon>('https://pokeapi.co/api/v2/pokemon/' + name);
   }
 

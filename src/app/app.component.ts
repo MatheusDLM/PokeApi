@@ -40,8 +40,6 @@ export class AppComponent {
   onSubmit() {
     const pokemonName = this.form.controls.name.value;
 
-
-
     this.getPokemon(pokemonName);
   }
 
@@ -52,7 +50,7 @@ export class AppComponent {
 
 
   private getPokemon(name: string) {
-    this.httpService.getDados(name).subscribe((pokemon: Pokemon) => {
+    this.httpService.getDados(name)?.subscribe((pokemon: Pokemon) => {
       this.pokemon = pokemon;
       this.addToSearchHistory(pokemon);
     });
@@ -71,6 +69,9 @@ export class AppComponent {
       bairro: new FormControl('', { validators: Validators.required }),
       numero: new FormControl<number>(0, { validators: Validators.required, nonNullable: true }),  
     });
+
+
+    // this.cepControl = new FormControl(null, { validators: Validators.required });
   }
 
 }
