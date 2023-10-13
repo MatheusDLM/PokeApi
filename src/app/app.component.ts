@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpService } from './http.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Pokemon } from './app.interface';
+import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  private readonly $COMPONENT_DESTROY = new Subject<boolean>();
   title = 'rxjs';
   pokemon!: Pokemon;
   form!: FormGroup<formGroup>;
@@ -16,10 +18,15 @@ export class AppComponent {
 
   searchHistory: Pokemon[] = [];
 
-  constructor(private httpService: HttpService, private formBuilder: FormBuilder) {
+  constructor(private httpService: HttpService, private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
     this.createForm();
-    // this.formBuilder.group<formGroup>()
-    this.form.value // { cep: valorCep, bairro: valorBairro, estado: valorEstado }
+  }
+
+  ngOnDestroy(): void {
+    this.$COMPONENT_DESTROY.next(true);
+    this.$COMPONENT_DESTROY.complete();
   }
 
   onSubmit() {
@@ -31,9 +38,14 @@ export class AppComponent {
   removeFromHistory(index: number) {
     this.searchHistory.splice(index, 1);
   }
-
+  
   private getPokemon(name: string) {
-    this.httpService.getDados(name)?.subscribe((pokemon: Pokemon) => {
+    this.httpService.getDados(name)
+    ?.pipe(
+      take(1), // uma unica requisicao
+      takeUntil(this.$COMPONENT_DESTROY) // eventos ocorrendo 
+    )
+    .subscribe((pokemon: Pokemon) => {
       this.pokemon = pokemon;
       this.addToSearchHistory(pokemon);
     });
