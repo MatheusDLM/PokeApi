@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpService } from './http.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Pokemon } from './app.interface';
 
 @Component({
@@ -11,30 +11,14 @@ import { Pokemon } from './app.interface';
 export class AppComponent {
   title = 'rxjs';
   pokemon!: Pokemon;
-  form!: FormGroup<formGroup>; 
-
-  exampleFormControl: FormControl<boolean> = new FormControl(true, { validators: Validators.required, nonNullable: true });
-
-
-  cepControl: FormControl<string> = new FormControl('', { validators: Validators.required, nonNullable: true }); 
-  bairroControl: FormControl<string> = new FormControl('', { validators: Validators.required, nonNullable: true });
-  EstadoControl: FormControl<string> = new FormControl('', { validators: Validators.required, nonNullable: true });
-  CidadeControl: FormControl<string> = new FormControl('', { validators: Validators.required, nonNullable: true });
-
-  numeroControl: FormControl<number> = new FormControl(0, { validators: Validators.required, nonNullable: true });
+  form!: FormGroup<formGroup>;
 
 
   searchHistory: Pokemon[] = [];
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private _formBuilder: FormBuilder) {
     this.createForm();
-    this.exampleFormControl.value;
-
-    const cep = this.cepControl.value;
-    const bairro = this.bairroControl.value;
-    const estado = this.EstadoControl.value;
-
-    this.form.value // { cep: valorCep, bairro: valorBairro, estado: valorEstado }
+    // this.form.value // { cep: valorCep, bairro: valorBairro, estado: valorEstado }
   }
 
   onSubmit() {
@@ -47,8 +31,6 @@ export class AppComponent {
     this.searchHistory.splice(index, 1);
   }
 
-
-
   private getPokemon(name: string) {
     this.httpService.getDados(name)?.subscribe((pokemon: Pokemon) => {
       this.pokemon = pokemon;
@@ -60,16 +42,17 @@ export class AppComponent {
     this.searchHistory.unshift(pokemon);
   }
 
-  
+
   private createForm() {
-    this.form = new FormGroup<formGroup>({
+
+    //  this._formBuilder.group === new FormGroup()
+    this.form = this._formBuilder.group<formGroup>({
       name: new FormControl<string>('', { validators: Validators.required,  nonNullable: true }),
 
       cep: new FormControl('', { validators: Validators.required, nonNullable: true }),
       bairro: new FormControl('', { validators: Validators.required }),
-      numero: new FormControl<number>(0, { validators: Validators.required, nonNullable: true }),  
+      numero: new FormControl<number>(0, { validators: Validators.required, nonNullable: true }),
     });
-
 
     // this.cepControl = new FormControl(null, { validators: Validators.required });
   }
