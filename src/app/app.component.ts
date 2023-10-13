@@ -18,11 +18,6 @@ export class AppComponent {
 
   constructor(private httpService: HttpService, private formBuilder: FormBuilder) {
     this.createForm();
-    this.exampleFormControl.value;
-
-    const cep = this.cepControl.value;
-    const bairro = this.bairroControl.value;
-    const estado = this.EstadoControl.value;
     // this.formBuilder.group<formGroup>()
     this.form.value // { cep: valorCep, bairro: valorBairro, estado: valorEstado }
   }
@@ -52,7 +47,7 @@ export class AppComponent {
   private createForm() {
 
     //  this._formBuilder.group === new FormGroup()
-    this.form = this._formBuilder.group<formGroup>({
+    this.form = this.formBuilder.group<formGroup>({
       name: new FormControl<string>('', { validators: Validators.required,  nonNullable: true }),
 
       cep: new FormControl('', { validators: Validators.required, nonNullable: true }),

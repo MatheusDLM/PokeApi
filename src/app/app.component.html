@@ -6,9 +6,7 @@
 <!-- TODO? Utilizando SOMENTE o FormControl  -->
 <div> 
   <label>Digite o nome do pokemon: </label>
-  <input type="text" [formControl]="exampleFormControl">
-  <input type="text" [formControl]="cepControl">
-  <input type="text" [formControl]="bairroControl">
+
   <button class="search-button" type="submit" [disabled]="!exampleFormControl.valid" (click)="onSubmit()">Enviar</button>
 </div>
 <!--  -->
