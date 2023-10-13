@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpService } from './http.service';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Pokemon } from './app.interface';
 
 @Component({
@@ -16,9 +16,15 @@ export class AppComponent {
 
   searchHistory: Pokemon[] = [];
 
-  constructor(private httpService: HttpService, private _formBuilder: FormBuilder) {
+  constructor(private httpService: HttpService, private formBuilder: FormBuilder) {
     this.createForm();
-    // this.form.value // { cep: valorCep, bairro: valorBairro, estado: valorEstado }
+    this.exampleFormControl.value;
+
+    const cep = this.cepControl.value;
+    const bairro = this.bairroControl.value;
+    const estado = this.EstadoControl.value;
+    // this.formBuilder.group<formGroup>()
+    this.form.value // { cep: valorCep, bairro: valorBairro, estado: valorEstado }
   }
 
   onSubmit() {
